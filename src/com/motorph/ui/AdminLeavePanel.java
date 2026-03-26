@@ -25,20 +25,27 @@ public class AdminLeavePanel extends javax.swing.JPanel {
     }
 
     public final void loadTableData() {
-        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
-                new Object[]{"ID", "Start Date", "End Date", "Reason", "Status"}, 0
-        );
-        tblRequests.setModel(model);
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblRequests.getModel();
+        model.setRowCount(0);
 
         try (BufferedReader br = new BufferedReader(new FileReader("leave_requests.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
                 String[] data = line.split(",");
-                if (data[4].equalsIgnoreCase("PENDING")) {
-                    model.addRow(data);
+                if (data.length >= 5) {
+                    String status = data[4].trim();
+
+                    if (showAll || status.equalsIgnoreCase("PENDING")) {
+                        model.addRow(data);
+                    }
                 }
             }
         } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error loading table: " + e.getMessage());
         }
     }
 
@@ -54,6 +61,7 @@ public class AdminLeavePanel extends javax.swing.JPanel {
         String newStatus = approve ? "APPROVED" : "REJECTED";
 
         List<String> allLines = new ArrayList<>();
+        boolean found = false;
 
         try (BufferedReader br = new BufferedReader(new FileReader("leave_requests.csv"))) {
             String line;
@@ -70,6 +78,7 @@ public class AdminLeavePanel extends javax.swing.JPanel {
                     if (currentId.equals(targetId) && currentStartDate.equals(targetStartDate)) {
                         data[4] = newStatus;
                         line = String.join(",", data);
+                        found = true;
                     }
                 }
                 allLines.add(line);
@@ -79,15 +88,18 @@ public class AdminLeavePanel extends javax.swing.JPanel {
             return;
         }
 
-        try (PrintWriter out = new PrintWriter(new FileWriter("leave_requests.csv"))) {
-            for (String line : allLines) {
-                out.println(line);
-            }
-            JOptionPane.showMessageDialog(this, "Request " + newStatus);
+        if (!allLines.isEmpty()) {
+            try (PrintWriter out = new PrintWriter(new FileWriter("leave_requests.csv", false))) {
+                for (String line : allLines) {
+                    out.println(line);
+                }
+                out.flush();
 
-            loadTableData();
-        } catch (IOException e) {
-            e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Request " + newStatus);
+                loadTableData();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error writing to file: " + e.getMessage());
+            }
         }
     }
 
@@ -107,6 +119,7 @@ public class AdminLeavePanel extends javax.swing.JPanel {
         tblRequests = new javax.swing.JTable();
         btnApprove = new javax.swing.JButton();
         btnReject = new javax.swing.JButton();
+        btnLeaveHistory = new javax.swing.JButton();
 
         tblRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -127,6 +140,8 @@ public class AdminLeavePanel extends javax.swing.JPanel {
         btnReject.setText("Reject");
         btnReject.addActionListener(this::btnRejectActionPerformed);
 
+        btnLeaveHistory.setText("History");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -135,10 +150,12 @@ public class AdminLeavePanel extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(208, 208, 208)
+                .addGap(150, 150, 150)
                 .addComponent(btnApprove)
                 .addGap(45, 45, 45)
                 .addComponent(btnReject)
+                .addGap(46, 46, 46)
+                .addComponent(btnLeaveHistory)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -146,11 +163,12 @@ public class AdminLeavePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnApprove)
-                    .addComponent(btnReject))
-                .addContainerGap(36, Short.MAX_VALUE))
+                    .addComponent(btnReject)
+                    .addComponent(btnLeaveHistory))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -166,6 +184,7 @@ public class AdminLeavePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApprove;
+    private javax.swing.JButton btnLeaveHistory;
     private javax.swing.JButton btnReject;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblRequests;

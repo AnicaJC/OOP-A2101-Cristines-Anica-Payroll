@@ -11,23 +11,22 @@ package com.motorph.model;
 public class Employee {
 
     private final String id;
-    private final String lastName;
-    private final String firstName;
-    private final String fullName;
-    private final String birthday;
-    private final String address;
-    private final String phone;
+    private String lastName;
+    private String firstName;
+    private String fullName;
+    private String birthday;
+    private String address;
+    private String phone;
     private final String sss;
     private final String philhealth;
     private final String tin;
     private final String pagibig;
-    private final String position;
-    private final double hourlyRate;
-    private final double basicSalary;
-
-    private final double riceSubsidy;
-    private final double phoneAllowance;
-    private final double clothesAllowance;
+    private String position;
+    private double hourlyRate;
+    private double basicSalary;
+    private double riceSubsidy;
+    private double phoneAllowance;
+    private double clothesAllowance;
 
     public Employee(String id, String lastName, String firstName, String birthday,
             String address, String phone, String position, double basicSalary,
@@ -122,5 +121,47 @@ public class Employee {
     public double getClothesAllowance() {
         return clothesAllowance;
     }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void setBasicSalary(double basicSalary) {
+        if (basicSalary > 0) {
+            this.basicSalary = basicSalary;
+        }
+    }
+
+    public void setHourlyRate(double hourlyRate) {
+        if (hourlyRate > 0) {
+            this.hourlyRate = hourlyRate;
+        }
+    }
     
+    //public abstract double calculateNetPay();
+
+    //public class FullTimeEmployee extends Employee {
+    //public FullTimeEmployee(String id, String lastName, String firstName, String birthday,
+           // String address, String phone, String position, double basicSalary,
+         //  String sss, String philhealth, String tin, String pagibig,
+          //  double hourlyRate, double riceSubsidy, double phoneAllowance,
+          //  double clothesAllowance) {
+        //super(id, lastName, firstName, birthday, address, phone, position, basicSalary,
+           // sss, philhealth, tin, pagibig, hourlyRate, riceSubsidy, phoneAllowance,
+          //  clothesAllowance);
+    //}
+
+    //@Override
+    //public double calculateNetPay() {
+     //   return getBasicSalary() + getRiceSubsidy() + getPhoneAllowance(); 
+    //}
+//}
+
 }

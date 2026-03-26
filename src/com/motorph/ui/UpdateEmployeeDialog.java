@@ -4,23 +4,49 @@
  */
 package com.motorph.ui;
 
+import java.awt.Frame;
+import java.io.IOException;
+
 /**
  *
  * @author AJ
  */
-public class AddEmployeeDialog extends javax.swing.JDialog {
+public class UpdateEmployeeDialog extends javax.swing.JDialog {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddEmployeeDialog.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UpdateEmployeeDialog.class.getName());
 
     /**
-     * Creates new form AddEmployeeDialog
+     * Creates new form UpdateEmployeeDialog
      *
+     * @param employeeData
      * @param parent
      * @param modal
      */
-    public AddEmployeeDialog(java.awt.Frame parent, boolean modal) {
+    // Add these fields at the top of your class
+    public UpdateEmployeeDialog(Frame parent, boolean modal, String[] employeeData) {
         super(parent, modal);
         initComponents();
+
+        if (employeeData != null) {
+            txtId.setText(employeeData[0]);
+            txtId.setEditable(false);
+            txtLastName.setText(employeeData[1]);
+            txtFirstName.setText(employeeData[2]);
+            txtBirthday.setText(employeeData[3]);
+            txtAddress.setText(employeeData[4]);
+            txtPhoneNumber.setText(employeeData[5]);
+            txtSSSNum.setText(employeeData[6]);
+            txtPhilHealthNum.setText(employeeData[7]);
+            txtTIN.setText(employeeData[8]);
+            txtPagibigNum.setText(employeeData[9]);
+            txtPosition.setText(employeeData[10]);
+            txtBasicSalary.setText(employeeData[11]);
+            txtRiceSubsidy.setText(employeeData[12]);
+            txtPhoneAllowance.setText(employeeData[13]);
+            txtClothesAllowance.setText(employeeData[14]);
+            txtRate.setText(employeeData[16]);
+
+        }
     }
 
     /**
@@ -104,7 +130,7 @@ public class AddEmployeeDialog extends javax.swing.JDialog {
 
         lblPhilHealthNum.setText("PhilHealth #:");
 
-        jLabel9.setText("New Employee Input");
+        jLabel9.setText("Update Employee Details");
 
         lblTIN.setText("TIN:");
 
@@ -287,27 +313,39 @@ public class AddEmployeeDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_txtPhoneAllowanceActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        String csvLine = String.format("%s,%s,%s,%s,\"%s\",%s,%s,%s,%s,%s,%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%s",
-                txtId.getText(), txtLastName.getText(), txtFirstName.getText(), txtBirthday.getText(),
-                txtAddress.getText(), txtPhoneNumber.getText(), txtSSSNum.getText(), txtPhilHealthNum.getText(),
-                txtTIN.getText(), txtPagibigNum.getText(), txtPosition.getText(), txtBasicSalary.getText(),
-                txtRiceSubsidy.getText(), txtPhoneAllowance.getText(), txtClothesAllowance.getText(),
-                "0.00", txtRate.getText());
-
         String path = "MotorPH_Employee Data - Employee Details.csv";
+        java.util.List<String> lines = new java.util.ArrayList<>();
+        String targetId = txtId.getText();
 
-        try (java.io.FileWriter fw = new java.io.FileWriter(path, true); java.io.BufferedWriter bw = new java.io.BufferedWriter(fw)) {
+        try {
+            java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(path));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith(targetId + ",")) {
+                    String updatedLine = String.format("%s,%s,%s,%s,\"%s\",%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                            txtId.getText(), txtLastName.getText(), txtFirstName.getText(), txtBirthday.getText(),
+                            txtAddress.getText(), txtPhoneNumber.getText(), txtSSSNum.getText(), txtPhilHealthNum.getText(),
+                            txtTIN.getText(), txtPagibigNum.getText(), txtPosition.getText(), txtBasicSalary.getText(),
+                            txtRiceSubsidy.getText(), txtPhoneAllowance.getText(), txtClothesAllowance.getText(),
+                            "0.00", txtRate.getText());
+                    lines.add(updatedLine);
+                } else {
+                    lines.add(line);
+                }
+            }
+            br.close();
 
-            bw.newLine();
-            bw.write(csvLine);
-            bw.flush();
+            try (java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter(path, false))) {
+                for (String l : lines) {
+                    pw.println(l);
+                }
+            }
 
-            javax.swing.JOptionPane.showMessageDialog(this, "Employee added successfully!");
-
+            javax.swing.JOptionPane.showMessageDialog(this, "Employee updated successfully!");
             this.dispose();
 
         } catch (java.io.IOException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error saving: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error updating: " + e.getMessage());
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -334,7 +372,7 @@ public class AddEmployeeDialog extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(() -> {
-            AddEmployeeDialog dialog = new AddEmployeeDialog(new javax.swing.JFrame(), true);
+            UpdateEmployeeDialog dialog = new UpdateEmployeeDialog(new javax.swing.JFrame(), true, null);
             dialog.setVisible(true);
         });
     }

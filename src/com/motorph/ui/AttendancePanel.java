@@ -24,7 +24,7 @@ public class AttendancePanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) tblAttendance.getModel();
         model.setRowCount(0);
 
-        long totalMinutes = 0; // To keep track of the sum
+        long totalMinutes = 0;
 
         String csvFile = "MotorPH Employee Data - Attendance Record.csv";
         String line;
@@ -42,11 +42,9 @@ public class AttendancePanel extends javax.swing.JPanel {
                         String timeInStr = data[4].replace("\"", "").trim();
                         String timeOutStr = data[5].replace("\"", "").trim();
 
-                        // 1. Calculate duration for this row
                         Duration duration = getDuration(timeInStr, timeOutStr);
-                        totalMinutes += duration.toMinutes(); // Add to running total
+                        totalMinutes += duration.toMinutes();
 
-                        // 2. Format for table display
                         long h = duration.toHours();
                         long m = duration.toMinutesPart();
                         String formattedRowTime = String.format("%d hrs %02d mins", h, m);
@@ -61,7 +59,6 @@ public class AttendancePanel extends javax.swing.JPanel {
                 }
             }
 
-            // 3. After the loop, update the Total Label
             long totalH = totalMinutes / 60;
             long totalM = totalMinutes % 60;
             lblTotalHours.setText(String.format("Total Hours Worked: %d hrs %02d mins", totalH, totalM));
