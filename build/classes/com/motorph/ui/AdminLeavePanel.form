@@ -26,7 +26,7 @@
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Component id="btnReject" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-              <Component id="btnLeaveHistory" min="-2" max="-2" attributes="0"/>
+              <Component id="btnHistory" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -40,7 +40,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnApprove" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnReject" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnLeaveHistory" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnHistory" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="33" max="32767" attributes="0"/>
           </Group>
@@ -118,10 +118,13 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRejectActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnLeaveHistory">
+    <Component class="javax.swing.JButton" name="btnHistory">
       <Properties>
         <Property name="text" type="java.lang.String" value="History"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHistoryActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

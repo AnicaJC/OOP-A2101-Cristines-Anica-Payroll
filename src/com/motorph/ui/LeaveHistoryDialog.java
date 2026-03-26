@@ -8,16 +8,40 @@ package com.motorph.ui;
  *
  * @author AJ
  */
-public class LeaveHistoryDialog extends javax.swing.JDialog {
-    
+public final class LeaveHistoryDialog extends javax.swing.JDialog {
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LeaveHistoryDialog.class.getName());
 
     /**
      * Creates new form LeaveHistoryDialog
+     *
+     * @param parent
+     * @param modal
      */
     public LeaveHistoryDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        loadHistoryData();
+    }
+
+    public void loadHistoryData() {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblHistory.getModel();
+        model.setRowCount(0);
+
+        try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader("leave_requests.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                String[] data = line.split(",");
+                if (data.length >= 5) {
+                    model.addRow(data);
+                }
+            }
+        } catch (java.io.IOException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error loading history: " + e.getMessage());
+        }
     }
 
     /**
@@ -30,23 +54,31 @@ public class LeaveHistoryDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblHistory = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Emp ID", "Start Date", "End Date", "Leave Type", "Status"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblHistory);
 
         jButton1.setText("Close");
 
@@ -117,6 +149,6 @@ public class LeaveHistoryDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblHistory;
     // End of variables declaration//GEN-END:variables
 }

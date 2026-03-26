@@ -37,15 +37,15 @@ public class AdminLeavePanel extends javax.swing.JPanel {
 
                 String[] data = line.split(",");
                 if (data.length >= 5) {
-                    String status = data[4].trim();
+                    String status = data[4].trim().replace("\"", "");
 
-                    if (showAll || status.equalsIgnoreCase("PENDING")) {
+                    if (status.equalsIgnoreCase("PENDING")) {
                         model.addRow(data);
                     }
                 }
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error loading table: " + e.getMessage());
+            System.out.println("Error loading table: " + e.getMessage());
         }
     }
 
@@ -119,7 +119,7 @@ public class AdminLeavePanel extends javax.swing.JPanel {
         tblRequests = new javax.swing.JTable();
         btnApprove = new javax.swing.JButton();
         btnReject = new javax.swing.JButton();
-        btnLeaveHistory = new javax.swing.JButton();
+        btnHistory = new javax.swing.JButton();
 
         tblRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -140,7 +140,8 @@ public class AdminLeavePanel extends javax.swing.JPanel {
         btnReject.setText("Reject");
         btnReject.addActionListener(this::btnRejectActionPerformed);
 
-        btnLeaveHistory.setText("History");
+        btnHistory.setText("History");
+        btnHistory.addActionListener(this::btnHistoryActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -155,7 +156,7 @@ public class AdminLeavePanel extends javax.swing.JPanel {
                 .addGap(45, 45, 45)
                 .addComponent(btnReject)
                 .addGap(46, 46, 46)
-                .addComponent(btnLeaveHistory)
+                .addComponent(btnHistory)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -167,7 +168,7 @@ public class AdminLeavePanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnApprove)
                     .addComponent(btnReject)
-                    .addComponent(btnLeaveHistory))
+                    .addComponent(btnHistory))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -181,10 +182,16 @@ public class AdminLeavePanel extends javax.swing.JPanel {
         processRequest(false);
     }//GEN-LAST:event_btnRejectActionPerformed
 
+    private void btnHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistoryActionPerformed
+        LeaveHistoryDialog history = new LeaveHistoryDialog(null, true);
+        history.setLocationRelativeTo(this);
+        history.setVisible(true);
+    }//GEN-LAST:event_btnHistoryActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApprove;
-    private javax.swing.JButton btnLeaveHistory;
+    private javax.swing.JButton btnHistory;
     private javax.swing.JButton btnReject;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblRequests;
