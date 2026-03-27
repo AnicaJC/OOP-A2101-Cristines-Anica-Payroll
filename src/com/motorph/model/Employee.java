@@ -53,7 +53,7 @@ public class Employee {
         this.clothesAllowance = clothesAllowance;
 
     }
-    
+
     public String getId() {
         return id;
     }
@@ -121,6 +121,7 @@ public class Employee {
     public double getClothesAllowance() {
         return clothesAllowance;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -144,24 +145,11 @@ public class Employee {
             this.hourlyRate = hourlyRate;
         }
     }
-    
-    //public abstract double calculateNetPay();
 
-    //public class FullTimeEmployee extends Employee {
-    //public FullTimeEmployee(String id, String lastName, String firstName, String birthday,
-           // String address, String phone, String position, double basicSalary,
-         //  String sss, String philhealth, String tin, String pagibig,
-          //  double hourlyRate, double riceSubsidy, double phoneAllowance,
-          //  double clothesAllowance) {
-        //super(id, lastName, firstName, birthday, address, phone, position, basicSalary,
-           // sss, philhealth, tin, pagibig, hourlyRate, riceSubsidy, phoneAllowance,
-          //  clothesAllowance);
-    //}
-
-    //@Override
-    //public double calculateNetPay() {
-     //   return getBasicSalary() + getRiceSubsidy() + getPhoneAllowance(); 
-    //}
-//}
+    public boolean isAdmin() {
+        return position.contains("Manager")
+                || position.contains("Chief")
+                || position.contains("Head");
+    }
 
 }
