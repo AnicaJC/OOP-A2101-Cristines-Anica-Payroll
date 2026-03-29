@@ -26,6 +26,7 @@ The project follows a **Layered Architecture (Service-Model-Utility)** to ensure
 2. **Open in IDE:** Open the project folder in **NetBeans** or **IntelliJ**.
 3. **Data Files:** Ensure the `.csv` data files are in the root directory of the project.
 4. **Run** the project file to start the application.
+
 Login credentials:
 | User Type | Username | Password |
 | :--- | :--- | :--- |
