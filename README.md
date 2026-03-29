@@ -22,7 +22,7 @@ The project follows a **Layered Architecture (Service-Model-Utility)** to ensure
 ---
 
 ## How to use?
-1. **Clone the Repo:** `git clone [Repository Link](https://github.com/AnicaJC/OOP-A2101-Cristines-Anica-Payroll.git) or download as a .ZIP file and extract locally.`
+1. **Clone the Repo:** `git clone https://github.com/AnicaJC/OOP-A2101-Cristines-Anica-Payroll.git or download as a .ZIP file and extract locally.`
 2. **Open in IDE:** Open the project folder in **NetBeans** or **IntelliJ**.
 3. **Data Files:** Ensure the `.csv` data files are in the root directory of the project.
 4. **Run** the project file to start the application.
