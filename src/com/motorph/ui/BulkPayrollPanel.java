@@ -28,6 +28,8 @@ public final class BulkPayrollPanel extends javax.swing.JPanel {
                 double taxableIncome = gross - sss;
                 double tax = com.motorph.service.SalaryCalculator.calculateTax(taxableIncome);
                 double net = gross - sss - tax;
+                double philhealth = com.motorph.service.SalaryCalculator.calculatePhilHealth(gross);
+                double pagibig = com.motorph.service.SalaryCalculator.calculatePagIBIG(gross);
 
                 model.addRow(new Object[]{
                     emp.getId(),
@@ -35,7 +37,9 @@ public final class BulkPayrollPanel extends javax.swing.JPanel {
                     String.format("%.2f", gross),
                     String.format("%.2f", sss),
                     String.format("%.2f", tax),
-                    String.format("%.2f", net)
+                    String.format("%.2f", net),
+                    String.format("%.2f", philhealth),
+                    String.format("%.2f", pagibig)
                 });
             }
         } catch (IOException e) {
@@ -65,13 +69,13 @@ public final class BulkPayrollPanel extends javax.swing.JPanel {
 
         tblPayroll.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Employee ID", "Name", "Gross", "SSS", "Tax", "Net Pay"
+                "Employee ID", "Name", "Gross", "SSS", "Tax", "Net Pay", "Philhealth", "Pag-ibig"
             }
         ));
         jScrollPane1.setViewportView(tblPayroll);

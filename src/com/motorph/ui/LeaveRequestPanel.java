@@ -99,28 +99,39 @@ public class LeaveRequestPanel extends javax.swing.JPanel {
     private void btnSubmitLeaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitLeaveActionPerformed
         String startDate = txtStartEnd.getText().trim();
         String endDate = txtEndDate.getText().trim();
-        String reason = cmbReason.getSelectedItem().toString();
-        String employeeId = currentUser.getId();
-        String status = "PENDING";
+
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("MM/dd/uuuu")
+                .withResolverStyle(java.time.format.ResolverStyle.STRICT);
 
         if (startDate.isEmpty() || endDate.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Please fill in all date fields.");
             return;
         }
 
-        try (java.io.FileWriter fw = new java.io.FileWriter("leave_requests.csv", true); java.io.BufferedWriter bw = new java.io.BufferedWriter(fw); java.io.PrintWriter out = new java.io.PrintWriter(bw)) {
+        try {
+            java.time.LocalDate.parse(startDate, formatter);
+            java.time.LocalDate.parse(endDate, formatter);
 
-            out.println(employeeId + "," + startDate + "," + endDate + "," + reason + "," + status);
+            String reason = cmbReason.getSelectedItem().toString();
+            String employeeId = currentUser.getId();
+            String status = "PENDING";
 
-            javax.swing.JOptionPane.showMessageDialog(this, "Leave request submitted successfully!");
+            try (java.io.FileWriter fw = new java.io.FileWriter("leave_requests.csv", true); java.io.BufferedWriter bw = new java.io.BufferedWriter(fw); java.io.PrintWriter out = new java.io.PrintWriter(bw)) {
 
-            txtStartEnd.setText("");
-            txtEndDate.setText("");
+                out.println(employeeId + "," + startDate + "," + endDate + "," + reason + "," + status);
+                javax.swing.JOptionPane.showMessageDialog(this, "Leave request submitted successfully!");
 
-        } catch (java.io.IOException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error saving request: " + e.getMessage());
+                txtStartEnd.setText("");
+                txtEndDate.setText("");
+
+            } catch (java.io.IOException e) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error saving request: " + e.getMessage());
+            }
+
+        } catch (java.time.format.DateTimeParseException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Invalid date format. Please use MM/DD/YYYY (e.g., 12/31/2023).");
         }
-        btnSubmitLeave.addActionListener(this::btnSubmitLeaveActionPerformed);
+        //btnSubmitLeave.addActionListener(this::btnSubmitLeaveActionPerformed);
     }//GEN-LAST:event_btnSubmitLeaveActionPerformed
 
 

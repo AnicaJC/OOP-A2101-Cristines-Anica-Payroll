@@ -33,7 +33,7 @@ public class EmployeeService {
                 double phone = parseAmount(data, 13);
                 double clothes = parseAmount(data, 14);
                 double hourlyRate = parseAmount(data, 16);
-
+                
                 if (data.length >= 17) {
 
                     Employee emp = new Employee(

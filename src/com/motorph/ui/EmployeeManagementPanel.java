@@ -152,6 +152,7 @@ public class EmployeeManagementPanel extends javax.swing.JPanel {
         btnAdd.addActionListener(this::btnAddActionPerformed);
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(this::btnUpdateActionPerformed);
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(this::btnDeleteActionPerformed);
@@ -188,8 +189,7 @@ public class EmployeeManagementPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        AddEmployeeDialog dialog = new AddEmployeeDialog(null, true);
-        dialog.setLocationRelativeTo(this);
+        AddEmployeeDialog dialog = new AddEmployeeDialog(new javax.swing.JFrame(), true);
         dialog.setVisible(true);
 
         loadEmployeeData();
@@ -218,6 +218,27 @@ public class EmployeeManagementPanel extends javax.swing.JPanel {
             loadEmployeeData();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        int selectedRow = tblEmployees.getSelectedRow();
+
+        if (selectedRow != -1) {
+            int columnCount = tblEmployees.getColumnCount();
+            String[] data = new String[columnCount];
+
+            for (int i = 0; i < columnCount; i++) {
+                Object value = tblEmployees.getValueAt(selectedRow, i);
+                data[i] = (value != null) ? value.toString() : "";
+            }
+
+            UpdateEmployeeDialog dialog = new UpdateEmployeeDialog(new javax.swing.JFrame(), true, data);
+            dialog.setVisible(true);
+
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select an employee from the table first!");
+        }
+        loadEmployeeData();
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
